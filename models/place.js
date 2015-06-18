@@ -1,4 +1,4 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/placesIveTraveled");
+mongoose.createConnection("mongodb://localhost/placesIveTraveled");
 
 module.exports.Place = require("./place");
