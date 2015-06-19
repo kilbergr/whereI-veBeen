@@ -8,10 +8,10 @@ $(function() {
     });
 
     var mapDiv = document.getElementById('map-canvas');
-
       google.maps.event.addListener(map, 'click', function(event) {
-        addMarker(event.latLng);
+      addMarker(event.latLng);
     });
+     
   }
 
 
@@ -23,22 +23,42 @@ $(function() {
     map: map
     });
     markers.push(marker); 
+
     //console.log("Lat: "+ marker.position.A + " Long: " + marker.position.F);
    // var data = {place: {address: address, lat: marker.position.A, long: marker.position.F}};
     //console.log(event.latLng.A);
     //console.log(event.latLng.F);
   }
 
-  google.maps.event.addDomListener(window, 'load', initialize);
+function setAllMap(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
 
+  function showMarkers() {
+  setAllMap(map);
+}
+
+showMarkers();
+
+
+  //so that a marker appears when you click it without refreshing
+  // google.maps.event.addDomListener(window, 'load', initialize);
+   
+ 
  initialize();
+
 
 
   function addPlaces() {
     $.getJSON("/places").done(function(data) {
         data.places.forEach(function(place) {
+             //console.log(place);
+             addMarker(place);
+
             var html = placeHTML(place);
-            $('body').append(html);
+            $('#addedPoints').append(html);
         });
        // console.log(data);
     });
@@ -86,8 +106,10 @@ $('#placesyouvebeen').click(function(e) {
         data: data,
         dataType: 'json'
       }).done(function(data) {
-        addMarker(data.place);
-         $('body').append(placeHTML(data.place));
+
+      //  addMarker(data.place);
+
+         $('#addedPoints').append(placeHTML(data.place));
          $('#newplaceform').remove();
       });
     });
