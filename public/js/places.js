@@ -1,5 +1,6 @@
 $(function() {
-  var map;
+  var map,
+  markers =[];
   function initialize() {
     map = new google.maps.Map(document.getElementById('map-canvas'), {
       zoom: 5,
@@ -8,17 +9,20 @@ $(function() {
 
     var mapDiv = document.getElementById('map-canvas');
 
-    google.maps.event.addListener(map, 'click', addMarker);
+      google.maps.event.addListener(map, 'click', function(event) {
+        addMarker(event.latLng);
+    });
   }
 
 
-  function addMarker(event) {
-  	console.log(event.latLng.A);
-  	console.log(event.latLng.F);
-
-  	//Add your code to add markers here
+  function addMarker(location) {
+    //Add your code to add markers here
+    var marker = new google.maps.Marker({
+    position: location,
+    map: map
+    });
+    markers.push(marker); 	
   }
-
 
  initialize();
 
@@ -79,22 +83,6 @@ $('#placesyouvebeen').click(function(e) {
       });
     });
 
-//   function codeAddress() {
-//   var geocoder = new google.maps.Geocoder();
-//   var address = $('#address').val();
-//   geocoder.geocode( { 'address': address}, function(results, status) {
-//     if (status == google.maps.GeocoderStatus.OK) {
-//       console.log(google.maps.GeocoderStatus)
-//      // $('#address').val('lat');
-//       });
-//     } else {
-//       alert('Geocode was not successful for the following reason: ' + status);
-//     }
-//   });
-// }
-// codeAddress();
-google.maps.event.addDomListener(window, 'load', initialize);
-   
   });
 
 
