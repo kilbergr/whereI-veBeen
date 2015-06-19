@@ -50,9 +50,9 @@ app.post('/places', function(req,res){
     //get lat/long from JSON and save
     else if(!error && response.statusCode ===200){
       placeData = JSON.parse(body).results[0];
-      var longi = placeData.geometry.location.lng;
+      var long = placeData.geometry.location.lng;
       var lat = placeData.geometry.location.lat;
-      place.long = longi;
+      place.long = long;
       place.lat = lat;
       //save place with added lat/long
       place.save(function(err,place) {

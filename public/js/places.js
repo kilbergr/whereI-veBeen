@@ -17,12 +17,19 @@ $(function() {
 
   function addMarker(location) {
     //Add your code to add markers here
+    var myLatlng = new google.maps.LatLng(location.lat, location.long)
     var marker = new google.maps.Marker({
-    position: location,
+    position: myLatlng,
     map: map
     });
-    markers.push(marker); 	
+    markers.push(marker); 
+    //console.log("Lat: "+ marker.position.A + " Long: " + marker.position.F);
+   // var data = {place: {address: address, lat: marker.position.A, long: marker.position.F}};
+    //console.log(event.latLng.A);
+    //console.log(event.latLng.F);
   }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
 
  initialize();
 
@@ -33,13 +40,13 @@ $(function() {
             var html = placeHTML(place);
             $('body').append(html);
         });
-        console.log(data);
+       // console.log(data);
     });
   }
 
   function placeHTML(place) {
     return '<div data-id="' + place._id + '"><p><a href="/places/' + place._id + '/">' + place.address + 
-           '</a></p><p>Latitude:' + place.lat + 'Longitude:' + place.long + '</p>' +
+           '</a></p><p>Latitude: ' + place.lat + ', Longitude: ' + place.long + '</p>' +
            '<p><a href="/places/' + place._id + '/edit">Change a place</a></p></div>';
   }
 addPlaces();
@@ -71,6 +78,7 @@ $('#placesyouvebeen').click(function(e) {
       var long = $('#long').val();
 
       var data = {place: {address: address, lat: lat, long: long}};
+    
 
       $.ajax({
         type: 'POST',
@@ -78,6 +86,7 @@ $('#placesyouvebeen').click(function(e) {
         data: data,
         dataType: 'json'
       }).done(function(data) {
+        addMarker(data.place);
          $('body').append(placeHTML(data.place));
          $('#newplaceform').remove();
       });
