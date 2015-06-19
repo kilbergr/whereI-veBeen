@@ -34,7 +34,7 @@ $(function() {
   }
 
   function placeHTML(place) {
-    return '<div data-id="' + place._id + '"><p><a href="/puppies/' + place._id + '/">' + place.address + 
+    return '<div data-id="' + place._id + '"><p><a href="/places/' + place._id + '/">' + place.address + 
            '</a></p><p>Latitude:' + place.lat + 'Longitude:' + place.long + '</p>' +
            '<p><a href="/places/' + place._id + '/edit">Change a place</a></p></div>';
   }
@@ -78,6 +78,22 @@ $('#placesyouvebeen').click(function(e) {
          $('#newplaceform').remove();
       });
     });
+
+//   function codeAddress() {
+//   var geocoder = new google.maps.Geocoder();
+//   var address = $('#address').val();
+//   geocoder.geocode( { 'address': address}, function(results, status) {
+//     if (status == google.maps.GeocoderStatus.OK) {
+//       console.log(google.maps.GeocoderStatus)
+//      // $('#address').val('lat');
+//       });
+//     } else {
+//       alert('Geocode was not successful for the following reason: ' + status);
+//     }
+//   });
+// }
+// codeAddress();
+google.maps.event.addDomListener(window, 'load', initialize);
    
   });
 

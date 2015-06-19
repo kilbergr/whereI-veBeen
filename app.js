@@ -4,7 +4,8 @@ var express = require('express'),
     db = require("./models"),
     methodOverride = require("method-override"),
     favicon = require('serve-favicon'),
-    morgan = require("morgan");
+    morgan = require("morgan"),
+    request = require("request");
 
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
@@ -36,7 +37,41 @@ app.get('/places', function(req,res){
 
 app.post('/places', function(req,res){
   var place = new db.Place(req.body.place);
-  console.log(place);
+//to find longitude and latitude if they're missing
+ if(place.long === null || place.lat === null){
+  var add = new RegExp(place.address);
+  var url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + add;
+  //request from google API for lat/long
+  request(url, function(error, response, body){
+    if(error){
+      console.log(error);
+      res.render('errors/500');
+    }
+    //get lat/long from JSON and save
+    else if(!error && response.statusCode ===200){
+      placeData = JSON.parse(body).results[0];
+      var longi = placeData.geometry.location.lng;
+      var lat = placeData.geometry.location.lat;
+      place.long = longi;
+      place.lat = lat;
+      //save place with added lat/long
+      place.save(function(err,place) {
+       res.format({
+        'text/html': function(){
+          res.render("places");
+        },
+        'application/json': function(){
+          res.send({place:place});
+        },
+        'default': function(){
+          res.status(406).send('Not Acceptable');
+        }
+      })
+     })
+    }
+   })
+  }
+ else {
   place.save(function(err,place) {
        res.format({
         'text/html': function(){
@@ -49,7 +84,8 @@ app.post('/places', function(req,res){
           res.status(406).send('Not Acceptable');
         }
       })
-  });
+     })
+    }
 });
 
 app.get('/places/new', function(req,res){
