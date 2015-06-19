@@ -19,7 +19,18 @@ app.get('/', function(req,res){
 
 app.get('/places', function(req,res){
   db.Place.find({}, function(err,places){
-   res.render("places/index", {places: places});
+          res.format({
+        'text/html': function(){
+          res.render("places/index", {places:places});
+        },
+        'application/json': function(){
+          res.send({places:places});
+        },
+        'default': function(){
+          res.status(406).send('Not Acceptable');
+        }
+      })
+   //res.render("places/index", {places: places});
   });
 });
 
@@ -27,7 +38,17 @@ app.post('/places', function(req,res){
   var place = new db.Place(req.body.place);
   console.log(place);
   place.save(function(err,place) {
-    res.redirect("/places");
+       res.format({
+        'text/html': function(){
+          res.render("places");
+        },
+        'application/json': function(){
+          res.send({place:place});
+        },
+        'default': function(){
+          res.status(406).send('Not Acceptable');
+        }
+      })
   });
 });
 
