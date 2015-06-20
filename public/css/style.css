@@ -1,9 +1,26 @@
 html, body {
 	height: 100%;
 	margin: 0px;
-	padding: 0px
+	padding: 0px;
+	background-color: #ebfbff;
+	font-family: Tahoma;
+	font-size: 14px;
 }
 
 #map-canvas {
 	height: 400px;
+}
+
+header{
+	text-align: center;
+	margin: 15px;
+	background-color: #d6edeb;
+	opacity: 0.8;
+	padding: 15px;
+	color: gray;
+	font-size: 24px;
+}
+
+.addedPoints{
+	margin-top: 15px;
 }
