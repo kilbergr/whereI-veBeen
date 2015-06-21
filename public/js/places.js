@@ -41,11 +41,12 @@ $(function() {
 
   map.mapTypes.set('map_style', styledMap);
   map.setMapTypeId('map_style');
-  
+
     var mapDiv = document.getElementById('map-canvas');
-     // google.maps.event.addDomListener(window, 'load', initialize);
+     
       google.maps.event.addListener(map, 'click', function(event) {
       addMarker(event.latLng);
+     // google.maps.event.addDomListener(window, 'load', initialize);
     });
   }
 
@@ -86,7 +87,7 @@ $(function() {
      }
 
 addPlaces();
-
+//google.maps.event.addDomListener(window, 'load', initialize);
 $('#placesyouvebeen').click(function(e) {
     e.preventDefault();
     var html = '<br/><form id="newplaceform" action="/places" method="POST">' +
